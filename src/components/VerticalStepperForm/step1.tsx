@@ -50,7 +50,7 @@ const Step1 = () => {
                         <FormControl fullWidth margin="normal" required sx={{ marginBottom: "1em !important" }}>
                             <TextField
                                 name="full_name"
-                                label="Full Name"
+                                label="Full name"
                                 variant="standard"
                                 fullWidth
                                 margin="normal"
@@ -70,7 +70,7 @@ const Step1 = () => {
                         <FormControl fullWidth margin="normal" required sx={{ marginBottom: "1em !important" }}>
                             <TextField
                                 name="school_name"
-                                label="School Name"
+                                label="School name"
                                 variant="standard"
                                 fullWidth
                                 margin="normal"

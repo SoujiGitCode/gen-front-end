@@ -14,9 +14,9 @@ const Step2 = () => {
         initialValues: {
             size: "",
             jobs: "",
-            jobs_steps: "",
+            job_step: "",
             machines: "",
-            machines_steps: "",
+            machine_step: "",
             distributions: "",
             speed_scaling: "",
             release_due_date: "",
@@ -110,16 +110,16 @@ const Step2 = () => {
                     <Grid item xs={12} lg={6} sx={{ paddingX: '1rem' }}>
                         <FormControl fullWidth margin="normal" required sx={{ marginBottom: "0.3em !important" }}>
                             <TextField
-                                name="jobs_steps"
-                                label="Jobs Steps"
+                                name="job_step"
+                                label="Job Step"
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                value={formik.values.jobs_steps}
-                                error={formik.touched.jobs_steps && Boolean(formik.errors.jobs_steps)}
-                                helperText={formik.touched.jobs_steps && formik.errors.jobs_steps}
+                                value={formik.values.job_step}
+                                error={formik.touched.job_step && Boolean(formik.errors.job_step)}
+                                helperText={formik.touched.job_step && formik.errors.job_step}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -150,16 +150,16 @@ const Step2 = () => {
                     <Grid item xs={12} lg={6} sx={{ paddingX: '1rem' }}>
                         <FormControl fullWidth margin="normal" required sx={{ marginBottom: "0.3em !important" }}>
                             <TextField
-                                name="machines_steps"
-                                label="Machines Steps"
+                                name="machine_step"
+                                label="Machine Step"
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                value={formik.values.machines_steps}
-                                error={formik.touched.machines_steps && Boolean(formik.errors.machines_steps)}
-                                helperText={formik.touched.machines_steps && formik.errors.machines_steps}
+                                value={formik.values.machine_step}
+                                error={formik.touched.machine_step && Boolean(formik.errors.machine_step)}
+                                helperText={formik.touched.machine_step && formik.errors.machine_step}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -174,16 +174,16 @@ const Step2 = () => {
                         <FormControl fullWidth margin="none" required error={formik.touched.distributions && Boolean(formik.errors.distributions)}>
                             <Box display="flex" flexDirection="row">
                                 <FormControlLabel
-                                    control={<Checkbox checked={formik.values.distributions.includes('Option1')} onChange={onSelectCheckBox} value="Option1" />}
-                                    label="Label"
+                                    control={<Checkbox checked={formik.values.distributions.includes('normal')} onChange={onSelectCheckBox} value="normal" />}
+                                    label="Normal"
                                 />
                                 <FormControlLabel
-                                    control={<Checkbox checked={formik.values.distributions.includes('Option2')} onChange={onSelectCheckBox} value="Option2" />}
-                                    label="Required"
+                                    control={<Checkbox checked={formik.values.distributions.includes('uniform')} onChange={onSelectCheckBox} value="uniform" />}
+                                    label="Uniform"
                                 />
                                 <FormControlLabel
-                                    control={<Checkbox checked={formik.values.distributions.includes('Option3')} onChange={onSelectCheckBox} value="Option3" />}
-                                    label="Disabled"
+                                    control={<Checkbox checked={formik.values.distributions.includes('exponential')} onChange={onSelectCheckBox} value="exponential" />}
+                                    label="Exponential"
                                 />
                             </Box>
                             {formik.touched.distributions && formik.errors.distributions && (

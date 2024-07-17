@@ -16,7 +16,7 @@ import { useFormik } from 'formik';
 
 const steps = [
     {
-        label: 'Enter Your Details',
+        label: 'Personal Information',
         description: 'Please fill in your details.',
         content: (
             <>
@@ -25,8 +25,8 @@ const steps = [
         ),
     },
     {
-        label: 'More Details',
-        description: 'Please fill in additional details.',
+        label: 'JSP Instance Generator',
+        description: 'Please fill in the fields in order to generate instances.',
         content: (
             <>
                 <Step2 />
@@ -34,8 +34,8 @@ const steps = [
         ),
     },
     {
-        label: 'Finish',
-        description: 'Review and submit your data.',
+        label: 'Download',
+        description: 'Wait for the instances to generate and Download the Zip file.',
         content: (
             <Step3 />
         ),
