@@ -5,7 +5,7 @@ export const validationStep2 = Yup.object({
         .matches(/^\d{1,5}$/, "Only numbers are allowed and maximum 5 digits")
         .required('Size field is Required'),
 
-    seed: Yup.string()
+    seeds: Yup.string()
         .matches(/^\d{1,20}$/, "Only numbers are allowed and maximum 20 digits")
         .required('Seed field is Required'),
 

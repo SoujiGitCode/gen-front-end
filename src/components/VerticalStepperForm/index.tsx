@@ -13,45 +13,138 @@ import Step1 from './step1';
 import Step2 from './step2';
 import Step3 from './step3';
 import { useFormik } from 'formik';
-
-const steps = [
-    {
-        label: 'Personal Information',
-        description: 'Please fill in your details.',
-        content: (
-            <>
-                <Step1 />
-            </>
-        ),
-    },
-    {
-        label: 'JSP Instance Generator',
-        description: 'Please fill in the fields in order to generate instances.',
-        content: (
-            <>
-                <Step2 />
-            </>
-        ),
-    },
-    {
-        label: 'Download',
-        description: 'Wait for the instances to generate and Download the Zip file.',
-        content: (
-            <Step3 />
-        ),
-    },
-];
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { dark } from '@mui/material/styles/createPalette';
 
 
-export const initialValues = {
+const buttons = {
+    mt: 1,
+    mr: 1,
+    width: '250px !important'
+}
+interface FormData {
+    email: string;
+    full_name: string;
+    school_name: string;
 
+    size: string;
+    jobs: string;
+    job_step: string;
+    machines: string;
+    machine_step: string;
+    distributions: string[];
+    speed_scaling: string;
+    release_due_date: string;
+    seeds: string;
 }
 
-export default function VerticalStepper() {
-    const [activeStep, setActiveStep] = useState(0);
+const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
+    const initialFormData: FormData = {
+        email: "dev@gg.com",
+        full_name: "reinaldo c",
+        school_name: "upv",
 
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        size: "1",
+        jobs: "10",
+        job_step: "5",
+        machines: "10",
+        machine_step: "5",
+        distributions: ["normal"],
+        speed_scaling: "5",
+        release_due_date: "2",
+        seeds: "1"
+    };
+
+    const [activeStep, setActiveStep] = useState(0);
+    const [isStepValid, setStepValid] = useState(false);
+    const [uniqueIdDownload, setUniqueIdDowload] = useState("");
+
+    const API_BASE_URL = "http://127.0.0.1:8000";
+
+    const parseFormData = (formData: FormData) => {
+        // Extracción de campos específicos del objeto original
+        const { email, full_name, school_name, seeds, ...dataToProcess } = formData;
+
+        // Transformar `size`, `speed_scaling`, y `release_due_date` a números, si son necesarios
+        const transformedData = {
+            size: parseInt(dataToProcess.size),
+            speed_scaling: parseInt(dataToProcess.speed_scaling),
+            release_due_date: parseInt(dataToProcess.release_due_date),
+            seeds: [seeds]
+        };
+
+        // Calcular los arrays para 'jobs' y 'machines' correctamente
+        const jobStep = parseInt(dataToProcess.job_step);
+        const jobs = parseInt(dataToProcess.jobs);
+        const machineStep = parseInt(dataToProcess.machine_step);
+        const machines = parseInt(dataToProcess.machines);
+
+        const jobsArray = Array.from({ length: Math.ceil((jobs - jobStep + jobStep) / jobStep) }, (_, i) => (i * jobStep + jobStep));
+        const machinesArray = Array.from({ length: Math.ceil((machines - machineStep + machineStep) / machineStep) }, (_, i) => (i * machineStep + machineStep));
+
+        // Retornar el nuevo objeto combinando el objeto transformado con los nuevos arrays para 'jobs' y 'machines'
+        return {
+            email,
+            full_name,
+            school_name,
+            ...transformedData,
+            jobs: jobsArray,
+            machines: machinesArray,
+            distributions: dataToProcess.distributions,
+        };
+    }
+
+    const handleNext = async () => {
+        const nextStep = activeStep + 1;
+
+        // Verificar si el usuario está avanzando desde el paso 2
+        if (activeStep === 1) {
+            setStepValid(false); // Desactivar el botón mientras carga la petición
+
+            // Mostrar un modal de carga
+            Swal.fire({
+                title: 'Cargando...',
+                text: 'Por favor espere.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading(); // Mostrar el spinner de carga
+                }
+            });
+
+
+            try {
+                const response = await axios.post(`${API_BASE_URL}/custom_generation`, parseFormData(formData));
+                console.log('Datos enviados con éxito:', response.data);
+
+                setUniqueIdDowload(response.data.unique_id);
+
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Datos enviados correctamente.',
+                    // icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+
+                // Proceder al siguiente paso tras el éxito
+                setActiveStep(nextStep);
+            } catch (error) {
+                console.error('Error al enviar los datos:', error);
+
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudieron enviar los datos.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        } else {
+            setActiveStep(nextStep); // Procede al siguiente paso si no estamos en el paso 2
+        }
+    };
+
+    const onGenerateClick = async () => {
+        setActiveStep(1);
     };
 
     const handleBack = () => {
@@ -60,6 +153,69 @@ export default function VerticalStepper() {
 
     const handleReset = () => {
         setActiveStep(0);
+    };
+
+    const updateFormData = (data: Partial<FormData>, reset = false) => {
+        if (reset) {
+            setFormData(initialFormData);
+            return;
+        }
+        setFormData(prevData => ({ ...prevData, ...data }));
+    };
+
+    const [formData, setFormData] = useState<FormData>(initialFormData);
+
+    const steps = [
+        {
+            label: 'Personal Information',
+            description: 'Please fill in your details.',
+            content: (
+                <>
+                    <Step1 formData={formData} setFormData={setFormData} isStepValid={isStepValid} setStepValid={setStepValid} updateFormData={updateFormData} />
+                </>
+            ),
+        },
+        {
+            label: 'JSP Instance Generator',
+            description: 'Please fill in the fields in order to generate instances.',
+            content: (
+                <>
+                    <Step2 formData={formData} setFormData={setFormData} isStepValid={isStepValid} setStepValid={setStepValid} updateFormData={updateFormData} />
+                </>
+            ),
+        },
+        {
+            label: 'Download',
+            description: 'Thank you for using the JSP Instance Generator',
+            content: (
+                <Step3 />
+            ),
+        },
+    ];
+
+    const onClickDownload = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/download/${uniqueIdDownload}`, {
+                method: 'GET',
+                headers: {}
+            });
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = uniqueIdDownload; // El nombre con el que quieres guardar el archivo
+                document.body.appendChild(a);
+                a.click();
+                a.remove(); // Limpiar el DOM
+                window.URL.revokeObjectURL(url);
+            } else {
+                throw new Error('Error en la descarga del archivo.');
+            }
+        } catch (error) {
+            console.error('Error al descargar el archivo:', error);
+            // Manejar el error, mostrar mensaje al usuario, etc.
+        }
     };
 
     return (
@@ -72,33 +228,64 @@ export default function VerticalStepper() {
                             <Typography>{step.description}</Typography>
                             <>{step.content}</>
                             <Box sx={{ mb: 2 }}>
-                                <Button
-                                    variant="contained"
-                                    onClick={handleNext}
-                                    sx={{ mt: 1, mr: 1 }}
-                                >
-                                    {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                                </Button>
-                                <Button
-                                    disabled={index === 0}
-                                    onClick={handleBack}
-                                    sx={{ mt: 1, mr: 1 }}
-                                >
-                                    Back
-                                </Button>
+                                {index < 2 ?
+                                    <>
+                                        <Button
+                                            disabled={!isStepValid}
+                                            variant="contained"
+                                            onClick={handleNext}
+                                            sx={{ ...buttons, color: darkMode ? '' : '#fdfefd !important', }}
+                                        >
+                                            Continue
+                                        </Button>
+
+                                        <Button
+                                            disabled={index === 0 || !isStepValid}
+                                            variant="contained"
+                                            onClick={handleBack}
+                                            sx={{ ...buttons, color: darkMode ? '' : '#fdfefd !important', }}
+                                        >
+                                            Back
+                                        </Button>
+                                    </>
+
+                                    :
+
+                                    <>
+                                        <Button
+                                            disabled={!uniqueIdDownload}
+                                            variant="contained"
+                                            onClick={onClickDownload}
+                                            sx={{
+                                                ...buttons,
+                                                backgroundColor: darkMode ? '#fdfdfd ' : '#303030',
+                                                color: darkMode ? '#303030 !important' : '#fdfdfd !important',
+                                                ':hover': {
+                                                    backgroundColor: darkMode ? '#e0e0e0' : '#3c3c3c',
+                                                    color: darkMode ? '#303030' : '#fdfdfd',
+                                                }
+                                            }}
+                                        >
+                                            Download Zip
+                                        </Button>
+
+
+                                        <Button
+                                            variant="contained"
+                                            onClick={onGenerateClick}
+                                            sx={{ ...buttons, color: darkMode ? '' : '#fdfefd !important', }}
+                                        >
+                                            Generate
+                                        </Button>
+                                    </>
+                                }
                             </Box>
                         </StepContent>
                     </Step>
                 ))}
             </Stepper>
-            {activeStep === steps.length && (
-                <Paper square elevation={0} sx={{ p: 3 }}>
-                    <Typography>All steps completed - you're finished</Typography>
-                    <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                        Reset
-                    </Button>
-                </Paper>
-            )}
         </Box>
     );
 }
+
+export default VerticalStepper

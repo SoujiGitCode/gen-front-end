@@ -1,16 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, FormControl, Grid, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { validationStep1 } from './step1Validations';
 
-const Step1 = () => {
+interface FormData {
+    email: string;
+    full_name: string;
+    school_name: string;
+
+    size: string;
+    jobs: string;
+    job_step: string;
+    machines: string;
+    machine_step: string;
+    distributions: string[];
+    speed_scaling: string;
+    release_due_date: string;
+    seeds: string;
+}
+
+
+interface StepData {
+    formData: FormData;
+    setFormData: (formData: FormData) => void;
+    isStepValid: boolean
+    setStepValid: (isStepValid: boolean) => void;
+    updateFormData: (data: Partial<FormData>, reset: boolean) => void;
+}
+
+
+const Step1 = ({ formData, setFormData, isStepValid, setStepValid, updateFormData }: StepData) => {
+
     const formik = useFormik({
         validateOnMount: true,
         initialValues: {
-            email: "",
-            full_name: "",
-            school_name: "",
+            email: formData.email,
+            full_name: formData.full_name,
+            school_name: formData.school_name,
         },
         validationSchema: validationStep1,
         onSubmit: async (values) => {
@@ -20,6 +47,22 @@ const Step1 = () => {
         validateOnBlur: true,
         enableReinitialize: true
     });
+
+
+    useEffect(() => {
+        if (!formik.isValid) {
+            setStepValid(false)
+        }
+        if (formik.isValid) {
+            setStepValid(true)
+            updateFormData({
+                full_name: formik.values.full_name,
+                email: formik.values.email,
+                school_name: formik.values.school_name,
+            }, false);
+        }
+    }, [formik.values, formik.touched, formik.isValid]);
+
 
     return (
         <>

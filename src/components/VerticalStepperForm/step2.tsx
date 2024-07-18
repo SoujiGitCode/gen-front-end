@@ -1,26 +1,52 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Checkbox, FormControl, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { validationStep2 } from './step2Validations';
 import { useTheme, useMediaQuery } from '@mui/material';
 
-const Step2 = () => {
+
+interface FormData {
+    email: string;
+    full_name: string;
+    school_name: string;
+
+    size: string;
+    jobs: string;
+    job_step: string;
+    machines: string;
+    machine_step: string;
+    distributions: string[];
+    speed_scaling: string;
+    release_due_date: string;
+    seeds: string;
+}
+
+
+interface StepData {
+    formData: FormData;
+    setFormData: (formData: FormData) => void;
+    isStepValid: boolean
+    setStepValid: (isStepValid: boolean) => void;
+    updateFormData: (data: Partial<FormData>, reset: boolean) => void;
+}
+
+const Step2 = ({ formData, setFormData, isStepValid, setStepValid, updateFormData }: StepData) => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     const formik = useFormik({
         validateOnMount: true,
         initialValues: {
-            size: "",
-            jobs: "",
-            job_step: "",
-            machines: "",
-            machine_step: "",
-            distributions: "",
-            speed_scaling: "",
-            release_due_date: "",
-            seed: "",
+            size: formData.size,
+            jobs: formData.jobs,
+            job_step: formData.job_step,
+            machines: formData.machines,
+            machine_step: formData.machine_step,
+            distributions: formData.distributions,
+            speed_scaling: formData.speed_scaling,
+            release_due_date: formData.release_due_date,
+            seeds: formData.seeds,
         },
         validationSchema: validationStep2,
         onSubmit: async (values) => {
@@ -41,9 +67,32 @@ const Step2 = () => {
     };
 
 
+    useEffect(() => {
+        if (!formik.isValid) {
+            setStepValid(false)
+            console.log(formik.errors)
+        }
+        if (formik.isValid) {
+            setStepValid(true)
+            updateFormData({
+                size: formik.values.size,
+                jobs: formik.values.jobs,
+                job_step: formik.values.job_step,
+                machines: formik.values.machines,
+                machine_step: formik.values.machine_step,
+                distributions: formik.values.distributions,
+                speed_scaling: formik.values.speed_scaling,
+                release_due_date: formik.values.release_due_date,
+                seeds: formik.values.seeds,
+            }, false);
+        }
+    }, [formik.values, formik.touched, formik.isValid]);
+
+
+
     return (
         <>
-            <Box sx={{ maxHeight: isSmallScreen ? '50vh' : '60vh', overflowY: 'none', display: 'flex' }}>
+            <Box sx={{ maxHeight: isSmallScreen ? 'auto' : 'auto', overflowY: 'none', display: 'flex' }}>
                 <Grid container spacing={0}>
                     <Grid item xs={12} lg={6} sx={{ paddingX: '1rem' }}>
                         <FormControl fullWidth margin="normal" required sx={{ marginBottom: "0.3em !important" }}>
@@ -70,16 +119,16 @@ const Step2 = () => {
                     <Grid item xs={12} lg={6} sx={{ paddingX: '1rem' }}>
                         <FormControl fullWidth margin="normal" required sx={{ marginBottom: "0.3em !important" }}>
                             <TextField
-                                name="seed"
+                                name="seeds"
                                 label="Seed"
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                value={formik.values.seed}
-                                error={formik.touched.seed && Boolean(formik.errors.seed)}
-                                helperText={formik.touched.seed && formik.errors.seed}
+                                value={formik.values.seeds}
+                                error={formik.touched.seeds && Boolean(formik.errors.seeds)}
+                                helperText={formik.touched.seeds && formik.errors.seeds}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
