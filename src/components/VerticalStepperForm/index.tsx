@@ -40,20 +40,35 @@ interface FormData {
 }
 
 const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
-    const initialFormData: FormData = {
-        email: "dev@gg.com",
-        full_name: "reinaldo c",
-        school_name: "upv",
+    // const initialFormData: FormData = {
+    //     email: "dev@gg.com",
+    //     full_name: "reinaldo c",
+    //     school_name: "upv",
 
-        size: "1",
-        jobs: "10",
-        job_step: "5",
-        machines: "10",
-        machine_step: "5",
-        distributions: ["normal"],
-        speed_scaling: "5",
-        release_due_date: "2",
-        seeds: "1"
+    //     size: "1",
+    //     jobs: "10",
+    //     job_step: "5",
+    //     machines: "10",
+    //     machine_step: "5",
+    //     distributions: ["normal"],
+    //     speed_scaling: "5",
+    //     release_due_date: "2",
+    //     seeds: "1"
+    // };
+    const initialFormData: FormData = {
+        email: "",
+        full_name: "",
+        school_name: "",
+
+        size: "",
+        jobs: "",
+        job_step: "",
+        machines: "",
+        machine_step: "",
+        distributions: [],
+        speed_scaling: "",
+        release_due_date: "",
+        seeds: ""
     };
 
     const [activeStep, setActiveStep] = useState(0);
