@@ -119,8 +119,8 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
 
             // Mostrar un modal de carga
             Swal.fire({
-                title: 'Cargando...',
-                text: 'Por favor espere.',
+                title: 'Loading...',
+                text: 'Please wait.',
                 allowOutsideClick: false,
                 didOpen: () => {
                     Swal.showLoading(); // Mostrar el spinner de carga
@@ -135,8 +135,8 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                 setUniqueIdDowload(response.data.unique_id);
 
                 Swal.fire({
-                    title: '¡Éxito!',
-                    text: 'Datos enviados correctamente.',
+                    title: '¡Success!',
+                    text: 'Data has been sent.',
                     // icon: 'success',
                     confirmButtonText: 'OK'
                 });
@@ -148,8 +148,8 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
 
                 Swal.fire({
                     title: 'Error',
-                    text: 'No se pudieron enviar los datos.',
-                    icon: 'error',
+                    text: 'Data could not been sent.',
+                    // icon: 'error',
                     confirmButtonText: 'OK'
                 });
             }
