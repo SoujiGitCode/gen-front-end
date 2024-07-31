@@ -13,5 +13,5 @@ body {
 div:where(.swal2-container) button:where(.swal2-styled):not([disabled]) {
   cursor: pointer;
   color: white;
-  background-color: #A40E0E;
+  background-color: #222831;
 }

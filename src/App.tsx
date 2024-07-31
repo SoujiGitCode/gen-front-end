@@ -9,9 +9,9 @@ import Footer from './layouts/Footer';
 // Definición de colores para el tema oscuro
 const darkThemeColors = {
   primary: {
-    100: '#2C3A4F',
-    200: '#56647b',
-    300: '#b4c2dc',
+    100: '#00ADB5',
+    200: '#AAE3E2',
+    300: '#fdf6fd',
   },
   secondary: {
     100: '#fdfdfd',
@@ -19,39 +19,39 @@ const darkThemeColors = {
     300: '#fdfdfd',
   },
   accent: {
-    100: '#FF4D4D',
-    200: '#ffecda',
+    100: '#AC7DD2',
+    200: '#fff4ff',
   },
   text: {
-    100: '#FFFFFF',
-    200: '#e0e0e0',
+    100: '#EEEEEE',
+    200: '#C5C5C5',
   },
   bg: {
-    100: '#1A1F2B',
-    200: '#292e3b',
-    300: '#414654',
+    100: '#222831',
+    200: '#393E46',
+    300: '#454e59',
   }
 };
 
 // Definición de colores para el tema claro
 const lightThemeColors = {
   primary: {
-    100: '#c21d03',
-    200: '#A40E0E',
-    300: '#ffb787',
+    100: '#005B99',
+    200: '#4e88ca',
+    300: '#b7e9ff',
   },
   accent: {
-    100: '#393939',
-    200: '#bebebe',
+    100: '#FFD700',
+    200: '#e9aa2b',
   },
   text: {
-    100: '#232121',
-    200: '#4b4848',
+    100: '#333333',
+    200: '#5c5c5c',
   },
   bg: {
-    100: '#fbfbfb',
-    200: '#f1f1f1',
-    300: '#c8c8c8',
+    100: '#F5F5F5',
+    200: '#ebebeb',
+    300: '#c2c2c2',
   }
 };
 

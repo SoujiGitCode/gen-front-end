@@ -271,7 +271,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                                             disabled={!isStepValid}
                                             variant="contained"
                                             onClick={handleNext}
-                                            sx={{ ...buttons, color: darkMode ? '' : '#fdfefd !important', }}
+                                            sx={{ ...buttons, color: darkMode ? '#303030 !important' : '#fdfefd !important', }}
                                         >
                                             Continue
                                         </Button>
@@ -280,7 +280,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                                             disabled={index === 0 || !isStepValid}
                                             variant="contained"
                                             onClick={handleBack}
-                                            sx={{ ...buttons, color: darkMode ? '' : '#fdfefd !important', }}
+                                            sx={{ ...buttons, color: darkMode ? '#303030 !important' : '#fdfefd !important', }}
                                         >
                                             Back
                                         </Button>
@@ -309,7 +309,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                                         <Button
                                             variant="contained"
                                             onClick={onGenerateClick}
-                                            sx={{ ...buttons, color: darkMode ? '' : '#fdfefd !important', }}
+                                            sx={{ ...buttons, color: darkMode ? '#303030 !important' : '#fdfefd !important', }}
                                         >
                                             Generate
                                         </Button>
