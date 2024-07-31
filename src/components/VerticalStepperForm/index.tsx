@@ -16,6 +16,8 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { dark } from '@mui/material/styles/createPalette';
+import Step4 from './step4';
+import { FormData } from "./constants"
 
 
 const buttons = {
@@ -23,53 +25,47 @@ const buttons = {
     mr: 1,
     width: '250px !important'
 }
-interface FormData {
-    email: string;
-    full_name: string;
-    school_name: string;
 
-    size: string;
-    jobs: string;
-    job_step: string;
-    machines: string;
-    machine_step: string;
-    distributions: string[];
-    speed_scaling: string;
-    release_due_date: string;
-    seeds: string;
-}
 
 const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
-    // const initialFormData: FormData = {
-    //     email: "dev@gg.com",
-    //     full_name: "reinaldo c",
-    //     school_name: "upv",
-
-    //     size: "1",
-    //     jobs: "10",
-    //     job_step: "5",
-    //     machines: "10",
-    //     machine_step: "5",
-    //     distributions: ["normal"],
-    //     speed_scaling: "5",
-    //     release_due_date: "2",
-    //     seeds: "1"
-    // };
     const initialFormData: FormData = {
-        email: "",
-        full_name: "",
-        school_name: "",
+        email: "dev@gg.com",
+        full_name: "reinaldo c",
+        school_name: "upv",
 
-        size: "",
-        jobs: "",
-        job_step: "",
-        machines: "",
-        machine_step: "",
-        distributions: [],
-        speed_scaling: "",
-        release_due_date: "",
-        seeds: ""
+        size: "1",
+        jobs: "10",
+        job_step: "5",
+        machines: "10",
+        machine_step: "5",
+        distributions: ["normal"],
+        speed_scaling: "5",
+        release_due_date: "2",
+        seeds: "1",
+
+        pickle_file_output: false,
+        json_file_output: false,
+        dzn_file_output: true,
+        taillard_file_output: true,
+        single_folder_output: false,
+        custom_folder_name: ""
+
     };
+    // const initialFormData: FormData = {
+    //     email: "",
+    //     full_name: "",
+    //     school_name: "",
+
+    //     size: "",
+    //     jobs: "",
+    //     job_step: "",
+    //     machines: "",
+    //     machine_step: "",
+    //     distributions: [],
+    //     speed_scaling: "",
+    //     release_due_date: "",
+    //     seeds: ""
+    // };
 
     const [activeStep, setActiveStep] = useState(0);
     const [isStepValid, setStepValid] = useState(false);
@@ -79,7 +75,18 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
 
     const parseFormData = (formData: FormData) => {
         // Extracción de campos específicos del objeto original
-        const { email, full_name, school_name, seeds, ...dataToProcess } = formData;
+        const {
+            email,
+            full_name,
+            school_name,
+            seeds,
+            pickle_file_output,
+            json_file_output,
+            dzn_file_output,
+            taillard_file_output,
+            single_folder_output,
+            custom_folder_name,
+            ...dataToProcess } = formData;
 
         // Transformar `size`, `speed_scaling`, y `release_due_date` a números, si son necesarios
         const transformedData = {
@@ -103,6 +110,12 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
             email,
             full_name,
             school_name,
+            pickle_file_output,
+            json_file_output,
+            dzn_file_output,
+            taillard_file_output,
+            single_folder_output,
+            custom_folder_name,
             ...transformedData,
             jobs: jobsArray,
             machines: machinesArray,
@@ -114,7 +127,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
         const nextStep = activeStep + 1;
 
         // Verificar si el usuario está avanzando desde el paso 2
-        if (activeStep === 1) {
+        if (activeStep === 2) {
             setStepValid(false); // Desactivar el botón mientras carga la petición
 
             // Mostrar un modal de carga
@@ -127,11 +140,10 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                 }
             });
 
-
             try {
                 const response = await axios.post(`${API_BASE_URL}/custom_generation`, parseFormData(formData));
                 console.log('Datos enviados con éxito:', response.data);
-
+                setStepValid(true);
                 setUniqueIdDowload(response.data.unique_id);
 
                 Swal.fire({
@@ -145,6 +157,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                 setActiveStep(nextStep);
             } catch (error) {
                 console.error('Error al enviar los datos:', error);
+                setStepValid(true);
 
                 Swal.fire({
                     title: 'Error',
@@ -200,12 +213,21 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
             ),
         },
         {
+            label: 'Output Configuration',
+            description: 'Set your Output Configuration files and folder.',
+            content: (
+                <Step3 formData={formData} setFormData={setFormData} isStepValid={isStepValid} setStepValid={setStepValid} updateFormData={updateFormData} />
+            ),
+        },
+
+        {
             label: 'Download',
             description: 'Thank you for using the JSP Instance Generator',
             content: (
-                <Step3 />
+                <Step4 />
             ),
         },
+
     ];
 
     const onClickDownload = async () => {
@@ -243,7 +265,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                             <Typography>{step.description}</Typography>
                             <>{step.content}</>
                             <Box sx={{ mb: 2 }}>
-                                {index < 2 ?
+                                {index < 3 ?
                                     <>
                                         <Button
                                             disabled={!isStepValid}
@@ -283,7 +305,6 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                                         >
                                             Download Zip
                                         </Button>
-
 
                                         <Button
                                             variant="contained"
