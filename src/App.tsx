@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { createTheme, ThemeProvider, CssBaseline, Box, Grid, Switch, FormGroup, FormControlLabel } from '@mui/material';
 import Brightness7Icon from '@mui/icons-material/Brightness7'; // ícono del sol
 import Brightness4Icon from '@mui/icons-material/Brightness4'; // ícono de la luna
@@ -58,7 +58,8 @@ const lightThemeColors = {
 function App() {
   const [darkMode, setDarkMode] = useState(true);
 
-  const theme = createTheme({
+  // useMemo para asegurar que el tema solo se recalcula cuando darkMode cambia
+  const theme = useMemo(() => createTheme({
     palette: {
       mode: darkMode ? 'dark' : 'light',
       primary: {
@@ -71,7 +72,39 @@ function App() {
         primary: darkMode ? darkThemeColors.text[100] : lightThemeColors.text[100],
       }
     },
-  });
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            '& input:-webkit-autofill': {
+              WebkitBoxShadow: `0 0 0 100px ${darkMode ? darkThemeColors.bg[100] : lightThemeColors.bg[100]} inset`,
+              WebkitTextFillColor: darkMode ? darkThemeColors.text[100] : lightThemeColors.text[100],
+              caretColor: darkMode ? darkThemeColors.text[100] : lightThemeColors.text[100],
+            }
+          }
+        },
+      },
+      MuiInput: {
+        styleOverrides: {
+          input: {
+            '&:-webkit-autofill': {
+              WebkitBoxShadow: `0 0 0 100px ${darkMode ? darkThemeColors.bg[100] : lightThemeColors.bg[100]} inset`,
+            }
+          }
+        }
+      },
+      // Estilos para TextField "outlined"
+      MuiOutlinedInput: {
+        styleOverrides: {
+          input: {
+            '&:-webkit-autofill': {
+              WebkitBoxShadow: `0 0 0 100px ${darkMode ? darkThemeColors.bg[100] : lightThemeColors.bg[100]} inset`,
+            }
+          }
+        }
+      }
+    }
+  }), [darkMode]);  // Dependencia de darkMode
 
   return (
     <ThemeProvider theme={theme}>
