@@ -21,4 +21,5 @@ export interface FormData {
     taillard_file_output: boolean;
     single_folder_output: boolean;
     custom_folder_name: string;
+    solver: string
 }

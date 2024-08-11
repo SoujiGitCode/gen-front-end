@@ -48,7 +48,8 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
         dzn_file_output: true,
         taillard_file_output: true,
         single_folder_output: false,
-        custom_folder_name: ""
+        custom_folder_name: "",
+        solver: "Gecode"
 
     };
     // const initialFormData: FormData = {
@@ -86,6 +87,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
             taillard_file_output,
             single_folder_output,
             custom_folder_name,
+            solver,
             ...dataToProcess } = formData;
 
         // Transformar `size`, `speed_scaling`, y `release_due_date` a números, si son necesarios
@@ -116,6 +118,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
             taillard_file_output,
             single_folder_output,
             custom_folder_name,
+            solver,
             ...transformedData,
             jobs: jobsArray,
             machines: machinesArray,

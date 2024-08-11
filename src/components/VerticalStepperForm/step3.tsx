@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Checkbox, FormControl, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import React, { HTMLAttributes, useEffect, useState } from 'react';
+import { Box, Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, NativeSelect, Select, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { validationStep3 } from './step3Validations';
@@ -17,12 +17,8 @@ interface StepData {
 const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormData }: StepData) => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
     const [parsedCustomName, setParsedCustomName] = useState<string>('');
-
-
-
-
+    const [isSolverChecked, setIsSolverChecked] = useState<boolean>(false);
 
     const formik = useFormik({
         validateOnMount: true,
@@ -33,6 +29,7 @@ const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormDat
             taillard_file_output: formData.taillard_file_output,
             single_folder_output: formData.single_folder_output,
             custom_folder_name: formData.custom_folder_name,
+            solver: formData.solver,
             anyChecked: false,
         },
         validationSchema: validationStep3,
@@ -58,6 +55,7 @@ const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormDat
                 taillard_file_output: formik.values.taillard_file_output,
                 single_folder_output: formik.values.single_folder_output,
                 custom_folder_name: formik.values.custom_folder_name,
+                solver: formik.values.solver,
             }, false);
         }
     }, [formik.values, formik.touched, formik.isValid]);
@@ -101,6 +99,27 @@ const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormDat
     }
 
 
+    const onSolver = () => {
+        console.log(' onsolver: ' + formik.values.dzn_file_output)
+        if (!formik.values.dzn_file_output) setIsSolverChecked(false);
+        setIsSolverChecked(prev => !prev);
+    }
+
+    useEffect(() => {
+        // Listener para el checkbox que controla si se debe resolver instancias
+        if (!isSolverChecked || !formik.values.dzn_file_output) {
+            formik.setFieldValue('solver', 'None');  // Actualiza el campo solver a 'None'
+            formData.solver = 'None';  // También actualiza el objeto formData si es necesario
+            console.log('solver updated to None due to checkbox');
+        }
+    }, [isSolverChecked, formik.setFieldValue, formData]);
+
+
+    useEffect(() => {
+        console.log(formik.values.dzn_file_output)
+        if (!formik.values.dzn_file_output) setIsSolverChecked(false);
+    }, [formik.values.dzn_file_output])
+
     return (
         <>
             <Box sx={{ maxHeight: isSmallScreen ? 'auto' : 'auto', overflowY: 'none', display: 'flex' }}>
@@ -142,13 +161,13 @@ const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormDat
 
 
                         <Grid item xs={12} lg={6} sx={{ paddingX: '0rem' }}>
-                            <FormControl fullWidth margin="normal" required sx={{ marginBottom: "0.3em !important" }}>
+                            <FormControl fullWidth required sx={{ marginBottom: "1em !important" }}>
                                 <TextField
                                     name="custom_folder_name"
                                     label="Custom Folder Name"
                                     variant="outlined"
                                     fullWidth
-                                    margin="normal"
+                                    margin="dense"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.custom_folder_name}
@@ -162,13 +181,13 @@ const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormDat
                         </Grid>
 
                         <Grid item xs={12} lg={6} sx={{ paddingX: '0rem' }}>
-                            <FormControl fullWidth margin="normal" required sx={{ marginBottom: "0.3em !important" }}>
+                            <FormControl fullWidth required sx={{ marginBottom: "1em !important" }}>
                                 <TextField
                                     name="custom_folder_name_parsed"
                                     label="Parsed Custom Folder Name"
                                     variant="outlined"
                                     fullWidth
-                                    margin="normal"
+                                    margin="dense"
                                     value={parsedCustomName}
                                     inputProps={{  // Usar inputProps para propiedades específicas del elemento input
                                         readOnly: true  // Establecer readOnly aquí
@@ -177,6 +196,41 @@ const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormDat
                                         shrink: true,
                                     }}
                                 />
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12} lg={6} sx={{ paddingX: '0rem' }}>
+                            <FormControlLabel
+                                control={<Checkbox name="solve_instances" checked={isSolverChecked} onChange={onSolver} />}
+                                label="Solve Instances"
+                                disabled={!formik.values.dzn_file_output}
+                            />
+
+                            <FormControl fullWidth required sx={{ marginBottom: "1em !important" }}>
+                                <TextField
+                                    label="Solver"
+                                    select
+                                    fullWidth
+                                    margin="dense"
+                                    name='solver'
+                                    id="solver"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.solver || formData.solver}
+                                    error={formik.touched.solver && Boolean(formik.errors.solver)}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    inputProps={{
+                                        disabled: !isSolverChecked || !formik.values.dzn_file_output
+                                    }}
+                                >
+                                    <MenuItem value={'None'}>None</MenuItem>
+                                    <MenuItem value={'Gecode'}>Gecode</MenuItem>
+                                    <MenuItem value={'Cplex'}>Cplex</MenuItem>
+                                    <MenuItem value={'Gurobi'}>Gurobi</MenuItem>
+                                    <MenuItem value={'ORTOOLS'}>ORTOOLS</MenuItem>
+                                </TextField>
                             </FormControl>
                         </Grid>
 
