@@ -1,28 +1,28 @@
-import { Grid, Typography } from '@mui/material'
+import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import logo from "@assets/images/logo-upv.png";
 import logoWhite from "@assets/images/logo-upv-white.png";
 
-
 const Navbar = ({ darkMode }: { darkMode: boolean }) => {
-    return (
-        <>
-            <Grid container sx={{ padding: "1.5rem", marginLeft: '2rem', marginBottom: "1rem", alignItems: 'center', position: 'relative', }}>
-                <Grid item sx={{ position: 'absolute', left: 0 }}>
-                    <a href="/">
-                        <img src={darkMode ? logoWhite : logo} alt="Logo UPV" className="upv-logo" width="250px" />
-                    </a>
-                </Grid>
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
-                {/* Contenedor para el Typography centrado en todo el Grid */}
-                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Typography variant="h1" sx={{ fontSize: '2rem' }}>
-                        JSP Instance Generator
-                    </Typography>
-                </Grid>
+    return (
+        <Grid container sx={{ padding: "1.5rem", marginBottom: "1rem", alignItems: 'center', position: 'relative', flexDirection: isMobile ? 'column' : 'row' }}>
+            {/* Imagen del logo */}
+            <Grid item sx={{ display: 'flex', justifyContent: isMobile ? 'center' : 'flex-start', width: isMobile ? '100%' : 'auto', marginBottom: isMobile ? '1rem' : 0 }}>
+                <a href="/">
+                    <img src={darkMode ? logoWhite : logo} alt="Logo UPV" className="upv-logo" style={{ width: isMobile ? '200px' : '250px' }} />
+                </a>
             </Grid>
 
-        </>
-    )
+            {/* Título */}
+            <Grid item sx={{ display: 'flex', justifyContent: 'center', width: isMobile ? '100%' : 'auto' }}>
+                <Typography variant="h1" sx={{ fontSize: '2rem', textAlign: isMobile ? 'center' : 'left' }}>
+                    JSP Instance Generator
+                </Typography>
+            </Grid>
+        </Grid>
+    );
 }
 
-export default Navbar
+export default Navbar;
