@@ -157,16 +157,22 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                 setStepValid(true);
                 setUniqueIdDowload(response.data.unique_id);
 
+                // Swal.fire({
+                //     title: '¡Success!',
+                //     text: 'Data has been sent.',
+                //     confirmButtonText: 'OK',
+                //     customClass: {
+                //         title: 'swal-title-success'
+                //     }
+                // });
                 Swal.fire({
-                    title: '¡Success!',
-                    text: 'Data has been sent.',
-                    icon: 'success',
+                    title: 'Error',
+                    text: 'Unable to send or process the data. Please try again later.',
                     confirmButtonText: 'OK',
                     customClass: {
-                        title: 'swal-title-success'
+                        title: 'swal-title-error'
                     }
                 });
-
                 // Proceder al siguiente paso tras el éxito
                 setActiveStep(nextStep);
             } catch (error) {
@@ -176,7 +182,6 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                 Swal.fire({
                     title: 'Error',
                     text: 'Unable to send or process the data. Please try again later.',
-                    icon: 'error',
                     confirmButtonText: 'OK',
                     customClass: {
                         title: 'swal-title-error'
