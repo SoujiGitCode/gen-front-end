@@ -28,45 +28,53 @@ const buttons = {
 
 
 const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
-    const initialFormData: FormData = {
-        email: "dev@gg.com",
-        full_name: "reinaldo c",
-        school_name: "upv",
+    // const initialFormData: FormData = {
+    //     email: "dev@gg.com",
+    //     full_name: "reinaldo c",
+    //     school_name: "upv",
 
-        size: "1",
-        jobs: "10",
-        job_step: "5",
-        machines: "10",
-        machine_step: "5",
-        distributions: ["normal"],
-        speed_scaling: "5",
-        release_due_date: "2",
-        seeds: "1",
+    //     size: "1",
+    //     jobs: "10",
+    //     job_step: "5",
+    //     machines: "10",
+    //     machine_step: "5",
+    //     distributions: ["normal"],
+    //     speed_scaling: "5",
+    //     release_due_date: "2",
+    //     seeds: "1",
+
+    //     pickle_file_output: false,
+    //     json_file_output: false,
+    //     dzn_file_output: true,
+    //     taillard_file_output: true,
+    //     single_folder_output: false,
+    //     custom_folder_name: "",
+    //     solver: "Gecode"
+
+    // };
+    const initialFormData: FormData = {
+        email: "",
+        full_name: "",
+        school_name: "",
+
+        size: "",
+        jobs: "",
+        job_step: "",
+        machines: "",
+        machine_step: "",
+        distributions: [],
+        speed_scaling: "",
+        release_due_date: "",
+        seeds: "",
 
         pickle_file_output: false,
         json_file_output: false,
-        dzn_file_output: true,
-        taillard_file_output: true,
+        dzn_file_output: false,
+        taillard_file_output: false,
         single_folder_output: false,
         custom_folder_name: "",
         solver: "Gecode"
-
-    };
-    // const initialFormData: FormData = {
-    //     email: "",
-    //     full_name: "",
-    //     school_name: "",
-
-    //     size: "",
-    //     jobs: "",
-    //     job_step: "",
-    //     machines: "",
-    //     machine_step: "",
-    //     distributions: [],
-    //     speed_scaling: "",
-    //     release_due_date: "",
-    //     seeds: ""
-    // };
+    }
 
     const [activeStep, setActiveStep] = useState(0);
     const [isStepValid, setStepValid] = useState(false);
@@ -152,8 +160,11 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                 Swal.fire({
                     title: '¡Success!',
                     text: 'Data has been sent.',
-                    // icon: 'success',
-                    confirmButtonText: 'OK'
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        title: 'swal-title-success'
+                    }
                 });
 
                 // Proceder al siguiente paso tras el éxito
@@ -164,9 +175,12 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
 
                 Swal.fire({
                     title: 'Error',
-                    text: 'Data could not been sent.',
-                    // icon: 'error',
-                    confirmButtonText: 'OK'
+                    text: 'Unable to send or process the data. Please try again later.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        title: 'swal-title-error'
+                    }
                 });
             }
         } else {
@@ -259,8 +273,8 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
     };
 
     return (
-        <Box sx={{ width: '100%' }}>
-            <Stepper activeStep={activeStep} orientation="vertical">
+        <Box sx={{ width: '100%', border: '2px solid blue', padding: '15px' }} >
+            <Stepper activeStep={activeStep} orientation="vertical" >
                 {steps.map((step, index) => (
                     <Step key={step.label}>
                         <StepLabel>{step.label}</StepLabel>
@@ -323,7 +337,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                     </Step>
                 ))}
             </Stepper>
-        </Box>
+        </Box >
     );
 }
 

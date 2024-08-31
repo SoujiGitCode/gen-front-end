@@ -24,7 +24,7 @@ export const validationStep3 = Yup.object({
     // al menos uno de los checkboxes es true
     anyChecked: Yup.boolean().test(
         'checkOne',
-        'You must select at least one output type',
+        'You must select at least one output format',
         function () {
             return this.parent.pickle_file_output || this.parent.json_file_output || this.parent.dzn_file_output || this.parent.taillard_file_output;
         }

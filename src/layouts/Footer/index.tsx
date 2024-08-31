@@ -11,7 +11,7 @@ const Footer = ({ darkMode }: { darkMode: boolean }) => {
                     <div className="text-center">
                         <img src={darkMode ? logoWhite : logo} alt="Logo UPV" className="upv-logo" width="203" />
                     </div>
-                    <hr />
+                    <hr style={{ backgroundColor: darkMode ? 'white' : 'black', border: 'none', height: '1px' }} />
                 </div>
 
                 <div className="social-links text-center" style={{ marginBottom: '2rem', marginTop: '1rem !important' }}>

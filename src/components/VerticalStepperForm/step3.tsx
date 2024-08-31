@@ -197,7 +197,14 @@ const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormDat
                                     }}
                                 />
                             </FormControl>
+
+                            <br />
+                            <Typography color="rgba(0, 0, 0, 0.6)" variant="body2" sx={{ marginBottom: '1rem', marginTop: '-1em !important' }}>
+                                {'Valid Labels: {size}, {seed}, {jobs}, {machines}, {distribution}, {release_due_date}, {speed_scaling}'}
+                            </Typography>
                         </Grid>
+
+
 
                         <Grid item xs={12} lg={6} sx={{ paddingX: '0rem' }}>
                             <FormControlLabel

@@ -17,7 +17,7 @@ const Navbar = ({ darkMode }: { darkMode: boolean }) => {
 
             {/* Título */}
             <Grid item sx={{ display: 'flex', justifyContent: 'center', width: isMobile ? '100%' : 'auto' }}>
-                <Typography variant="h1" sx={{ fontSize: '2rem', textAlign: isMobile ? 'center' : 'left' }}>
+                <Typography variant="h1" sx={{ fontSize: '2rem', textAlign: isMobile ? 'center' : 'center' }}>
                     JSP Instance Generator
                 </Typography>
             </Grid>

@@ -113,7 +113,7 @@ function App() {
         <Navbar darkMode={darkMode} />
       </Box>
 
-      <Box sx={{ position: 'fixed', top: 16, right: 16, zIndex: 1300 }}> {/* Asegurando que esté por encima de la mayoría de otros elementos */}
+      <Box sx={{ position: 'fixed', top: 42, right: 16, zIndex: 1300 }}> {/* Asegurando que esté por encima de la mayoría de otros elementos */}
         <FormGroup>
           <FormControlLabel
             control={
