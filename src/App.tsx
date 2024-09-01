@@ -6,7 +6,6 @@ import VerticalStepperForm from './components/VerticalStepperForm';
 import Navbar from './layouts/Navbar';
 import Footer from './layouts/Footer';
 
-// Definición de colores para el tema oscuro
 const darkThemeColors = {
   primary: {
     100: '#00ADB5',
@@ -33,7 +32,6 @@ const darkThemeColors = {
   }
 };
 
-// Definición de colores para el tema claro
 const lightThemeColors = {
   primary: {
     100: '#005B99',
@@ -58,7 +56,6 @@ const lightThemeColors = {
 function App() {
   const [darkMode, setDarkMode] = useState(true);
 
-  // useMemo para asegurar que el tema solo se recalcula cuando darkMode cambia
   const theme = useMemo(() => createTheme({
     palette: {
       mode: darkMode ? 'dark' : 'light',
@@ -93,7 +90,6 @@ function App() {
           }
         }
       },
-      // Estilos para TextField "outlined"
       MuiOutlinedInput: {
         styleOverrides: {
           input: {
@@ -104,7 +100,7 @@ function App() {
         }
       }
     }
-  }), [darkMode]);  // Dependencia de darkMode
+  }), [darkMode]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -113,7 +109,7 @@ function App() {
         <Navbar darkMode={darkMode} />
       </Box>
 
-      <Box sx={{ position: 'fixed', top: 42, right: 16, zIndex: 1300 }}> {/* Asegurando que esté por encima de la mayoría de otros elementos */}
+      <Box sx={{ position: 'fixed', top: 42, right: 16, zIndex: 1300 }}>
         <FormGroup>
           <FormControlLabel
             control={

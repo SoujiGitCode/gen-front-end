@@ -1,5 +1,3 @@
-// Archivo: formTypes.ts
-
 export interface FormData {
     email: string;
     full_name: string;

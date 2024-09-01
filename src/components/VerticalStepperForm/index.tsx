@@ -28,30 +28,7 @@ const buttons = {
 
 
 const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
-    // const initialFormData: FormData = {
-    //     email: "dev@gg.com",
-    //     full_name: "reinaldo c",
-    //     school_name: "upv",
 
-    //     size: "1",
-    //     jobs: "10",
-    //     job_step: "5",
-    //     machines: "10",
-    //     machine_step: "5",
-    //     distributions: ["normal"],
-    //     speed_scaling: "5",
-    //     release_due_date: "2",
-    //     seeds: "1",
-
-    //     pickle_file_output: false,
-    //     json_file_output: false,
-    //     dzn_file_output: true,
-    //     taillard_file_output: true,
-    //     single_folder_output: false,
-    //     custom_folder_name: "",
-    //     solver: "Gecode"
-
-    // };
     const initialFormData: FormData = {
         email: "",
         full_name: "",
@@ -83,7 +60,6 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
     const API_BASE_URL = "http://127.0.0.1:8000";
 
     const parseFormData = (formData: FormData) => {
-        // Extracción de campos específicos del objeto original
         const {
             email,
             full_name,
@@ -98,7 +74,6 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
             solver,
             ...dataToProcess } = formData;
 
-        // Transformar `size`, `speed_scaling`, y `release_due_date` a números, si son necesarios
         const transformedData = {
             size: parseInt(dataToProcess.size),
             speed_scaling: parseInt(dataToProcess.speed_scaling),
@@ -106,7 +81,6 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
             seeds: [seeds]
         };
 
-        // Calcular los arrays para 'jobs' y 'machines' correctamente
         const jobStep = parseInt(dataToProcess.job_step);
         const jobs = parseInt(dataToProcess.jobs);
         const machineStep = parseInt(dataToProcess.machine_step);
@@ -115,7 +89,6 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
         const jobsArray = Array.from({ length: Math.ceil((jobs - jobStep + jobStep) / jobStep) }, (_, i) => (i * jobStep + jobStep));
         const machinesArray = Array.from({ length: Math.ceil((machines - machineStep + machineStep) / machineStep) }, (_, i) => (i * machineStep + machineStep));
 
-        // Retornar el nuevo objeto combinando el objeto transformado con los nuevos arrays para 'jobs' y 'machines'
         return {
             email,
             full_name,
@@ -137,23 +110,20 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
     const handleNext = async () => {
         const nextStep = activeStep + 1;
 
-        // Verificar si el usuario está avanzando desde el paso 2
         if (activeStep === 2) {
-            setStepValid(false); // Desactivar el botón mientras carga la petición
+            setStepValid(false);
 
-            // Mostrar un modal de carga
             Swal.fire({
                 title: 'Loading...',
                 text: 'Please wait.',
                 allowOutsideClick: false,
                 didOpen: () => {
-                    Swal.showLoading(); // Mostrar el spinner de carga
+                    Swal.showLoading();
                 }
             });
 
             try {
                 const response = await axios.post(`${API_BASE_URL}/custom_generation`, parseFormData(formData));
-                console.log('Datos enviados con éxito:', response.data);
                 setStepValid(true);
                 setUniqueIdDowload(response.data.unique_id);
 
@@ -166,10 +136,8 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                     }
                 });
 
-                // Proceder al siguiente paso tras el éxito
                 setActiveStep(nextStep);
             } catch (error) {
-                console.error('Error al enviar los datos:', error);
                 setStepValid(true);
 
                 Swal.fire({
@@ -182,7 +150,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                 });
             }
         } else {
-            setActiveStep(nextStep); // Procede al siguiente paso si no estamos en el paso 2
+            setActiveStep(nextStep);
         }
     };
 
@@ -192,10 +160,6 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
     };
 
     const updateFormData = (data: Partial<FormData>, reset = false) => {
@@ -256,7 +220,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = uniqueIdDownload; // El nombre con el que quieres guardar el archivo
+                a.download = uniqueIdDownload;
                 document.body.appendChild(a);
                 a.click();
                 a.remove(); // Limpiar el DOM
@@ -266,7 +230,6 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
             }
         } catch (error) {
             console.error('Error al descargar el archivo:', error);
-            // Manejar el error, mostrar mensaje al usuario, etc.
         }
     };
 

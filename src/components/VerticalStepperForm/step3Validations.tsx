@@ -21,7 +21,6 @@ export const validationStep3 = Yup.object({
                 return matches.every(match => validKeys.includes(match[1]));
             }
         ),
-    // al menos uno de los checkboxes es true
     anyChecked: Yup.boolean().test(
         'checkOne',
         'You must select at least one output format',

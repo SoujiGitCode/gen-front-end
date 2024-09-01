@@ -44,7 +44,6 @@ const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormDat
     useEffect(() => {
         if (!formik.isValid) {
             setStepValid(false)
-            console.log(formik.errors)
         }
         if (formik.isValid) {
             setStepValid(true)
@@ -62,61 +61,51 @@ const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormDat
 
 
     useEffect(() => {
-        console.log('holi')
         setParsedCustomName(parseCustomFolderName(formik.values.custom_folder_name, formData))
     }, [formik.values.custom_folder_name]);
 
     function parseCustomFolderName(customFolderName, formData) {
-        // Destructuramos formData usando alias para seeds y distributions
         const {
             size,
             jobs,
             machines,
             release_due_date,
             speed_scaling,
-            seeds: seed,  // Renombrando seeds a seed
-            distributions: distribution  // Renombrando distributions a distribution
+            seeds: seed,
+            distributions: distribution
         } = formData;
 
-        // Crear un objeto para mapear los nombres de los campos a sus valores correspondientes en formData
         const replacements = {
             size,
             jobs,
             machines,
             release_due_date,
             speed_scaling,
-            seed,  // Usando el nuevo nombre 'seed'
-            distribution: distribution.join(', ') // Usando 'distribution' y uniendo los elementos del array
+            seed,
+            distribution: distribution.join(', ')
         };
 
-        // Reemplazar cada campo en el string customFolderName
         return customFolderName.replace(/\{(size|jobs|machines|release_due_date|speed_scaling|seed|distribution)\}/g, (match) => {
-            // Eliminar los corchetes {} para obtener la clave
             const key = match.replace(/[{}]/g, '');
-            // Retornar el valor correspondiente si existe, si no, dejar el match como está
             return replacements.hasOwnProperty(key) ? replacements[key] : match;
         });
     }
 
 
     const onSolver = () => {
-        console.log(' onsolver: ' + formik.values.dzn_file_output)
         if (!formik.values.dzn_file_output) setIsSolverChecked(false);
         setIsSolverChecked(prev => !prev);
     }
 
     useEffect(() => {
-        // Listener para el checkbox que controla si se debe resolver instancias
         if (!isSolverChecked || !formik.values.dzn_file_output) {
-            formik.setFieldValue('solver', 'None');  // Actualiza el campo solver a 'None'
-            formData.solver = 'None';  // También actualiza el objeto formData si es necesario
-            console.log('solver updated to None due to checkbox');
+            formik.setFieldValue('solver', 'None');
+            formData.solver = 'None';
         }
     }, [isSolverChecked, formik.setFieldValue, formData]);
 
 
     useEffect(() => {
-        console.log(formik.values.dzn_file_output)
         if (!formik.values.dzn_file_output) setIsSolverChecked(false);
     }, [formik.values.dzn_file_output])
 
@@ -189,8 +178,8 @@ const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormDat
                                     fullWidth
                                     margin="dense"
                                     value={parsedCustomName}
-                                    inputProps={{  // Usar inputProps para propiedades específicas del elemento input
-                                        readOnly: true  // Establecer readOnly aquí
+                                    inputProps={{
+                                        readOnly: true
                                     }}
                                     InputLabelProps={{
                                         shrink: true,
