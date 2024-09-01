@@ -30,7 +30,7 @@ export const validationStep2 = Yup.object({
         .required('Distributions are Required'),
 
     speed_scaling: Yup.string()
-        .matches(/^(?:[1-9]|[1-4][0-9]|50)$/, "Must be an integer between 1 and 50")
+        .matches(/^(?:[1-5])$/, "Must be an integer between 1 and 5")
         .required('Speed Scaling field is Required'),
     
     release_due_date: Yup.string()
