@@ -234,7 +234,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
     };
 
     return (
-        <Box sx={{ width: '100%' }} >
+        <Box sx={{ width: '100%', }} >
             <Stepper activeStep={activeStep} orientation="vertical" >
                 {steps.map((step, index) => (
                     <Step key={step.label}>
