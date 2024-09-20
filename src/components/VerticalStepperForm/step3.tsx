@@ -12,9 +12,10 @@ interface StepData {
     isStepValid: boolean
     setStepValid: (isStepValid: boolean) => void;
     updateFormData: (data: Partial<FormData>, reset: boolean) => void;
+    darkMode: boolean
 }
 
-const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormData }: StepData) => {
+const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormData, darkMode }: StepData) => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [parsedCustomName, setParsedCustomName] = useState<string>('');
@@ -188,7 +189,7 @@ const Step3 = ({ formData, setFormData, isStepValid, setStepValid, updateFormDat
                             </FormControl>
 
                             <br />
-                            <Typography color="rgba(0, 0, 0, 0.6)" variant="body2" sx={{ marginBottom: '1rem', marginTop: '-1em !important' }}>
+                            <Typography color={darkMode ? "rgba(255,255,255, 0.6))" : "rgba(0, 0,0, 0.6)"} variant="body2" sx={{ marginBottom: '1rem', marginTop: '-1em !important' }}>
                                 {'Valid Labels: {size}, {seed}, {jobs}, {machines}, {distribution}, {release_due_date}, {speed_scaling}'}
                             </Typography>
                         </Grid>

@@ -195,7 +195,7 @@ const VerticalStepper = ({ darkMode }: { darkMode: boolean }) => {
             label: 'Output Configuration',
             description: 'Set your Output Configuration files and folder.',
             content: (
-                <Step3 formData={formData} setFormData={setFormData} isStepValid={isStepValid} setStepValid={setStepValid} updateFormData={updateFormData} />
+                <Step3 formData={formData} setFormData={setFormData} isStepValid={isStepValid} setStepValid={setStepValid} updateFormData={updateFormData} darkMode={darkMode} />
             ),
         },
 

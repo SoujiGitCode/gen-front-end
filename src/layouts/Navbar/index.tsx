@@ -7,7 +7,10 @@ const Navbar = ({ darkMode }: { darkMode: boolean }) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
     return (
-        <Grid container sx={{ padding: "1.5rem", marginBottom: "1rem", alignItems: 'center', position: 'relative', flexDirection: isMobile ? 'column' : 'row' }}>
+        <Grid container sx={{
+            padding: "1.5rem", marginBottom: "1rem", alignItems: 'center', position: 'relative', flexDirection: isMobile ? 'column' : 'row',
+            justifyContent: 'center'
+        }}>
             {/* Imagen del logo */}
             <Grid item sx={{ display: 'flex', justifyContent: isMobile ? 'center' : 'flex-start', width: isMobile ? '100%' : 'auto', marginBottom: isMobile ? '1rem' : 0 }}>
                 <a href="/">
